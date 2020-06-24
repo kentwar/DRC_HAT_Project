@@ -247,16 +247,17 @@ def extra_path_1and3(A,B,C,D,E,F,G):
     A-D             : List          : [sens, spec] 
 
     Outputs: 
-    result4         : List          : [sens, spec]
+    result5         : List          : [sens, spec]
     '''
 
 
     result1 = CAS(B, C)
-    result2 = COS(D, E)
-    result3 = CAS(A, result2)
-    result4 = COS(result1, result3)
+    result2 = COS(F, G)
+    result3 = COS(D, result2)
+    result4 = CAS(A, result3)
+    result5 = COS(result1, result4)
 
-    return(result4)
+    return(result5)
 
 def all_paths(A,B,C,D,E,F,G):
     ''' This calculates the sensitivity of an algorithm including Paths 1 & 2 & 3
