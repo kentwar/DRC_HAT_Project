@@ -5,7 +5,7 @@ import itertools as it
 
 
 #### This code is designed to calculate the sensitivity and specificity of
-#### all possible combinations of diagnostic tests for the treatment of 
+#### all possible combinations of diagnostic tests for the treatment of
 #### Human African Trypanosimiasis
 #### Used in the Jones,Strong,Fox,Kent,Chatchuea - 2019
 
@@ -13,7 +13,7 @@ import itertools as it
 ## Scenario 2: 74% for active, 61.2% for passive. A more optimistic scenario.
 ## Both scenarios have lymph node proportion in non HAT patients as 10% and
 ## can suggest higher in areas where a high frequency is shown.
-## In the paper we disabled optimism/pessimism and ignored passive as this is 
+## In the paper we disabled optimism/pessimism and ignored passive as this is
 ## not currently modelled.
 
 ###############################################################################
@@ -26,14 +26,14 @@ import itertools as it
 ## Column      : Content
 ##
 ## 0             String : Name of diagnostic tests
-## 1               
-## 2        
+## 1
+## 2
 ## 3             Float  : Mean Sensitivity of test
 ## 4
 ## 5
 ## 6             Float  : Mean Specificity of test
 ##
-## The unlabeled columns can be empty in the dataframe and exist only 
+## The unlabeled columns can be empty in the dataframe and exist only
 ## as a possible future work
 
 
@@ -48,12 +48,12 @@ def CAS(A, B):
 	'''Function for combining the sensitivity and specificity of two tests
 	CAS = Combine.And.Serial. Meaning we are combining tests that  are in serial
 	and that both have to be true to be taken as a positive
-    
+
     Inputs:
     A               : Numpy list    : [sensitivity,specificity]
-    
+
     Outputs:
-    combinedsens    : Integer       : values for sensitivity 
+    combinedsens    : Integer       : values for sensitivity
     combinedspec    : Integer       : values for specificity
     '''
 
@@ -66,12 +66,12 @@ def COS(A, B):
 	'''Function for combining the sensitivity and specificity of two tests
 	COS = Combine.'OR'.Serial Meaning we are combining tests that  are in serial
 	and if one of them is true then it is positive
-    
+
     Inputs:
     A               : Numpy list    : [sensitivity,specificity]
-    
+
     Outputs:
-    combinedsens    : Integer       : values for sensitivity 
+    combinedsens    : Integer       : values for sensitivity
     combinedspec    : Integer       : values for specificity
     '''
 	combinedsens = A[0] + (1 - A[0]) * B[0]
@@ -81,14 +81,14 @@ def COS(A, B):
 
 def CAP(A, B):
 	'''Function for combining the sensitivity and specificity of two tests
-	CAP = Combine.'AND'.Parallel Meaning we are combining tests that are in 
+	CAP = Combine.'AND'.Parallel Meaning we are combining tests that are in
 	Parallel and if both of them is true then it is positive
-    
+
     Inputs:
     A               : Numpy list    : [sensitivity,specificity]
-    
+
     Outputs:
-    combinedsens    : Integer       : values for sensitivity 
+    combinedsens    : Integer       : values for sensitivity
     combinedspec    : Integer       : values for specificity
     '''
 
@@ -99,14 +99,14 @@ def CAP(A, B):
 
 def COP(A, B):
 	'''Function for combining the sensitivity and specificity of two tests
-	COP = Combine.'OR'.Parallel Meaning we are combining tests that are in 
+	COP = Combine.'OR'.Parallel Meaning we are combining tests that are in
 	Parallel and if one of them is true then it is positive
-    
+
     Inputs:
     A               : Numpy list    : [sensitivity,specificity]
-    
+
     Outputs:
-    combinedsens    : Integer       : values for sensitivity 
+    combinedsens    : Integer       : values for sensitivity
     combinedspec    : Integer       : values for specificity
     '''
 
@@ -119,19 +119,19 @@ def COP(A, B):
 ############## Code Section Two - Path Analysis ###############################
 ###############################################################################
 
-## The following are all the different possible algorithms constructed from  
+## The following are all the different possible algorithms constructed from
 ## combining all possible paths utilising all possible tests
 
 def no_extra_paths(A, B, C, D):
-    ''' This calculates the sensitivity of a path constructed without any extra 
+    ''' This calculates the sensitivity of a path constructed without any extra
     paths
 
     We have the algorithm:  A and ((B and C) or D)
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result3         : List          : [sens, spec]
     '''
 
@@ -147,9 +147,9 @@ def extra_path_1(A, B, C, D):
     We have the algorithm:  (B and C) or (A and D)
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result3         : List          : [sens, spec]
     '''
 
@@ -165,9 +165,9 @@ def extra_path_2(A, B, C, D, E):
     We have the algorithm:  A and ((B and C) or  D or E)
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result4         : List          : [sens, spec]
     '''
 
@@ -184,9 +184,9 @@ def extra_path_3(A, B, C, D, F, G):
     We have the algorithm:  A and ((B and C) or  D or (F and G))
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result5         : List          : [sens, spec]
     '''
 
@@ -204,9 +204,9 @@ def extra_path_2and3(A, B, C, D, E, F, G):
     We have the algorithm:  A and ((B and C) or  D or E or (F and G))
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result6         : List          : [sens, spec]
     '''
 
@@ -225,9 +225,9 @@ def extra_path_1and2(A, B, C, D, E, F, G):
     We have the algorithm:  (B and C) or  (A and (D or E))
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result6         : List          : [sens, spec]
     '''
 
@@ -238,15 +238,15 @@ def extra_path_1and2(A, B, C, D, E, F, G):
 
     return(result4)
 
-def extra_path_1and3(A,B,C,D,E,F,G):
+def extra_path_1and3(A, B, C, D, E, F, G):
     ''' This calculates the sensitivity of an algorithm including path 1 & 3
 
     We have the algorithm:  (B and C) or  (A and (D or (F and G)))
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result5         : List          : [sens, spec]
     '''
 
@@ -259,15 +259,15 @@ def extra_path_1and3(A,B,C,D,E,F,G):
 
     return(result5)
 
-def all_paths(A,B,C,D,E,F,G):
+def all_paths(A, B, C, D, E, F, G):
     ''' This calculates the sensitivity of an algorithm including Paths 1 & 2 & 3
 
     We have the algorithm: (B and C) or  (A and (D or E or (F and G))
 
     Inputs:
-    A-D             : List          : [sens, spec] 
+    A-D             : List          : [sens, spec]
 
-    Outputs: 
+    Outputs:
     result6         : List          : [sens, spec]
     '''
 
@@ -286,9 +286,9 @@ def all_paths(A,B,C,D,E,F,G):
 
 def il(list_):
     '''il is an indexlister, returning the number of items in a list as a range
-    
-    Input           
-    list_           : List          
+
+    Input
+    list_           : List
 
     Output          : Range         : returns a range up to the number of items'''
 
@@ -296,13 +296,13 @@ def il(list_):
 
 def prep(df, index):
     '''Prep function is neccesary to pluck the items from the Pandas Dataframe
-    
-    Inputs 
+
+    Inputs
     df              : Pandas Dataframe
     index           : Integer
 
     Output
-    values          : list          : [sens, spec] of the individual test         
+    values          : list          : [sens, spec] of the individual test
     test_name       : string        : name of the test
     '''
 
@@ -311,12 +311,17 @@ def prep(df, index):
     test_name   = str(df.iloc[0])
     return(values, test_name)
 
+def rdtcattconflict(i):
+    '''A function to test if Catt dilutions and RDT appear in the same algorithm '''
+    if i[1] == 1 and i[4] != 3:
+        return(True)
+
 ###############################################################################
 ############## Code Section Four - Implementation #############################
 ###############################################################################
 
 def run_no_extra_paths(A, B, C, D):
-    ''' This runs the no_extra_paths algorithm for all possibile combinations 
+    ''' This runs the no_extra_paths algorithm for all possibile combinations
     of tests
     '''
 
@@ -325,11 +330,12 @@ def run_no_extra_paths(A, B, C, D):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D)))
 
-    for i in combinations: 
+    for i in combinations:
         Bi,Bstr = prep(B, i[1])
         Ci,Cstr = prep(C, i[2])
         Di,Dstr = prep(D, i[3])
-
+		if rdtcattconflict(i)==True:
+			print(Bstr +' '+ Cstr + ' ' + Dstr+' NOXP')
         values  = no_extra_paths(A[i[0]], Bi, Ci, Di)
         name    = Bstr +' '+ Cstr + ' ' + Dstr+' NOXP'
 
@@ -340,7 +346,7 @@ def run_no_extra_paths(A, B, C, D):
     return(output)
 
 def run_extra_path_1(A, B, C, D):
-    ''' This runs the extra_path_1 algorithm for all possibile combinations 
+    ''' This runs the extra_path_1 algorithm for all possibile combinations
     of tests
     '''
 
@@ -349,7 +355,7 @@ def run_extra_path_1(A, B, C, D):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D)))
 
-    for i in combinations: 
+    for i in combinations:
         Bi,Bstr = prep(B, i[1])
         Ci,Cstr = prep(C, i[2])
         Di,Dstr = prep(D, i[3])
@@ -365,7 +371,7 @@ def run_extra_path_1(A, B, C, D):
     return(output)
 
 def run_extra_path_2(A, B, C, D, E):
-    ''' This runs the extra_path_2 algorithm for all possibile combinations 
+    ''' This runs the extra_path_2 algorithm for all possibile combinations
     of tests
     '''
 
@@ -374,25 +380,26 @@ def run_extra_path_2(A, B, C, D, E):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E)))
 
-    for i in combinations: 
-        Bi,Bstr = prep(B, i[1])
-        Ci,Cstr = prep(C, i[2])
-        Di,Dstr = prep(D, i[3])
-        Ei,Estr = prep(E, i[4])
+    for i in combinations:
+        if not rdtcattconflict(i):
+            Bi,Bstr = prep(B, i[1])
+            Ci,Cstr = prep(C, i[2])
+            Di,Dstr = prep(D, i[3])
+            Ei,Estr = prep(E, i[4])
 
-        values  = extra_path_2(A[i[0]], Bi, Ci, Di, Ei)
-        name    = Bstr +' '+ Cstr + ' ' + Dstr + ' ' + Estr +' XP2'
+            values  = extra_path_2(A[i[0]], Bi, Ci, Di, Ei)
+            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' ' + Estr +' XP2'
 
-        temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
-        output  = output.append(temp)
+            temp    = pd.DataFrame([values])
+            temp.loc[0,'Algorithm'] = name
+            output  = output.append(temp)
     output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
 
 def run_extra_path_3(A, B, C, D, F, G):
-    ''' This runs the extra_path_3 algorithm for all possibile combinations 
+    ''' This runs the extra_path_3 algorithm for all possibile combinations
     of tests
     '''
     output = pd.DataFrame()  ## An empty placeholder
@@ -400,11 +407,11 @@ def run_extra_path_3(A, B, C, D, F, G):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(F), il(G)))
 
-    for i in combinations: 
+    for i in combinations:
         Bi,Bstr = prep(B, i[1])
         Ci,Cstr = prep(C, i[2])
         Di,Dstr = prep(D, i[3])
-        Fi,Fstr = prep(F, i[4]) 
+        Fi,Fstr = prep(F, i[4])
         Gi      = [G[i[5]],1-G[i[5]]]
         values  = extra_path_3(A[i[0]], Bi, Ci, Di, Fi, Gi)
         name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+Fstr+' ' +str(G[i[5]])+' XP3'
@@ -418,7 +425,7 @@ def run_extra_path_3(A, B, C, D, F, G):
     return(output)
 
 def run_extra_path_2and3(A, B, C, D, E, F, G):
-    ''' This runs the extra_path_2and3 algorithm for all possibile combinations 
+    ''' This runs the extra_path_2and3 algorithm for all possibile combinations
     of tests
     '''
 
@@ -427,26 +434,27 @@ def run_extra_path_2and3(A, B, C, D, E, F, G):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
 
-    for i in combinations: 
-        Bi,Bstr = prep(B, i[1])
-        Ci,Cstr = prep(C, i[2])
-        Di,Dstr = prep(D, i[3])
-        Ei,Estr = prep(E, i[4])
-        Fi,Fstr = prep(F, i[5]) 
-        Gi      = [G[i[6]],1-G[i[6]]]
-        values  = extra_path_2and3(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
-        name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP23'
+    for i in combinations:
+        if not rdtcattconflict(i):
+            Bi,Bstr = prep(B, i[1])
+            Ci,Cstr = prep(C, i[2])
+            Di,Dstr = prep(D, i[3])
+            Ei,Estr = prep(E, i[4])
+            Fi,Fstr = prep(F, i[5])
+            Gi      = [G[i[6]],1-G[i[6]]]
+            values  = extra_path_2and3(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
+            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP23'
 
-        temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
-        output  = output.append(temp)
+            temp    = pd.DataFrame([values])
+            temp.loc[0,'Algorithm'] = name
+            output  = output.append(temp)
     output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
 
 def run_extra_path_1and2(A, B, C, D, E, F, G):
-    ''' This runs the extra_path_1and2 algorithm for all possibile combinations 
+    ''' This runs the extra_path_1and2 algorithm for all possibile combinations
     of tests
     '''
 
@@ -455,26 +463,27 @@ def run_extra_path_1and2(A, B, C, D, E, F, G):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
 
-    for i in combinations: 
-        Bi,Bstr = prep(B, i[1])
-        Ci,Cstr = prep(C, i[2])
-        Di,Dstr = prep(D, i[3])
-        Ei,Estr = prep(E, i[4])
-        Fi,Fstr = prep(F, i[5]) 
-        Gi      = [G[i[6]],1-G[i[6]]]
-        values  = extra_path_1and2(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
-        name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP12'
+    for i in combinations:
+        if not rdtcattconflict(i):
+            Bi,Bstr = prep(B, i[1])
+            Ci,Cstr = prep(C, i[2])
+            Di,Dstr = prep(D, i[3])
+            Ei,Estr = prep(E, i[4])
+            Fi,Fstr = prep(F, i[5])
+            Gi      = [G[i[6]],1-G[i[6]]]
+            values  = extra_path_1and2(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
+            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP12'
 
-        temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
-        output  = output.append(temp)
+            temp    = pd.DataFrame([values])
+            temp.loc[0,'Algorithm'] = name
+            output  = output.append(temp)
     output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
 
 def run_extra_path_1and3(A, B, C, D, E, F, G):
-    ''' This runs the extra_path_1and3 algorithm for all possibile combinations 
+    ''' This runs the extra_path_1and3 algorithm for all possibile combinations
     of tests
     '''
 
@@ -483,26 +492,27 @@ def run_extra_path_1and3(A, B, C, D, E, F, G):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
 
-    for i in combinations: 
-        Bi,Bstr = prep(B, i[1])
-        Ci,Cstr = prep(C, i[2])
-        Di,Dstr = prep(D, i[3])
-        Ei,Estr = prep(E, i[4])
-        Fi,Fstr = prep(F, i[5]) 
-        Gi      = [G[i[6]],1-G[i[6]]]
-        values  = extra_path_1and3(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
-        name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP13'
+    for i in combinations:
+        if not rdtcattconflict(i):
+            Bi,Bstr = prep(B, i[1])
+            Ci,Cstr = prep(C, i[2])
+            Di,Dstr = prep(D, i[3])
+            Ei,Estr = prep(E, i[4])
+            Fi,Fstr = prep(F, i[5])
+            Gi      = [G[i[6]],1-G[i[6]]]
+            values  = extra_path_1and3(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
+            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP13'
 
-        temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
-        output  = output.append(temp)
+            temp    = pd.DataFrame([values])
+            temp.loc[0,'Algorithm'] = name
+            output  = output.append(temp)
     output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
 
 def run_allpaths(A, B, C, D, E, F, G):
-    ''' This runs the all_paths algorithm for all possibile combinations 
+    ''' This runs the all_paths algorithm for all possibile combinations
     of tests
     '''
 
@@ -511,19 +521,20 @@ def run_allpaths(A, B, C, D, E, F, G):
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
 
-    for i in combinations: 
-        Bi,Bstr = prep(B, i[1])
-        Ci,Cstr = prep(C, i[2])
-        Di,Dstr = prep(D, i[3])
-        Ei,Estr = prep(E, i[4])
-        Fi,Fstr = prep(F, i[5]) 
-        Gi      = [G[i[6]],1-G[i[6]]]
-        values  = all_paths(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
-        name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP13'
+    for i in combinations:
+        if not rdtcattconflict(i):
+            Bi,Bstr = prep(B, i[1])
+            Ci,Cstr = prep(C, i[2])
+            Di,Dstr = prep(D, i[3])
+            Ei,Estr = prep(E, i[4])
+            Fi,Fstr = prep(F, i[5])
+            Gi      = [G[i[6]],1-G[i[6]]]
+            values  = all_paths(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
+            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP123'
 
-        temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
-        output  = output.append(temp)
+            temp    = pd.DataFrame([values])
+            temp.loc[0,'Algorithm'] = name
+            output  = output.append(temp)
     output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
