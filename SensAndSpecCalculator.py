@@ -334,8 +334,6 @@ def run_no_extra_paths(A, B, C, D):
         Bi,Bstr = prep(B, i[1])
         Ci,Cstr = prep(C, i[2])
         Di,Dstr = prep(D, i[3])
-		if rdtcattconflict(i)==True:
-			print(Bstr +' '+ Cstr + ' ' + Dstr+' NOXP')
         values  = no_extra_paths(A[i[0]], Bi, Ci, Di)
         name    = Bstr +' '+ Cstr + ' ' + Dstr+' NOXP'
 
