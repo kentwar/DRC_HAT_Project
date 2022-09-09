@@ -141,6 +141,36 @@ def no_extra_paths(A, B, C, D):
 
     return(result3)
 
+def no_extra_paths_cost(A, B, C, D):
+    ''' This calculates the sensitivity of a path constructed without any extra
+    paths
+
+    We have the algorithm:  A and ((B and C) or D)
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+
+    pred0 = ((1 - Aspec) * Bcost +  
+            (1 - Aspec) * (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +
+            (1 - Aspec) *(1 - Bspec) * Cspec * Dcost)
+    pred1 = (Asens * Bcost + 
+            Asens * Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost)
+    return(pred0 , pred1)
+
 def extra_path_1(A, B, C, D):
     ''' This calculates the sensitivity of a path constructed including path1
 
@@ -158,6 +188,36 @@ def extra_path_1(A, B, C, D):
     result3 = COS(result1, result2)
 
     return(result3)
+
+def extra_path_1_cost(A, B, C, D):
+    ''' This calculates the sensitivity of a path constructed including path1
+
+    We have the algorithm:  (B and C) or (A and D)
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+
+    pred0 = (Bcost + 
+            (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +            
+            (1 - Aspec) * (1 - Bcost) * Cspec * Dcost)
+    pred1 = (Bcost + 
+            Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost)
+    return(pred0 , pred1)
+
 
 def extra_path_2(A, B, C, D, E):
     ''' This calculates the sensitivity of a path constructed including path2
@@ -178,6 +238,41 @@ def extra_path_2(A, B, C, D, E):
 
     return(result4)
 
+def extra_path_2_cost(A, B, C, D, E):
+    ''' This calculates the sensitivity of a path constructed including path2
+
+    We have the algorithm:  A and ((B and C) or  D or E)
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Esens , Espec  = E[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+    Ecost          = E[2]
+
+    pred0 = ((1 - Aspec) * Bcost +  
+            (1 - Aspec) * (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dcost + 
+            (1 - Aspec) * Bspec * Dspec * Ecost + 
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dspec * Ecost)
+    pred1 = (Asens * Bcost + 
+            Asens * Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost + 
+            Asens * (1 - Bsens) * (1 - Dsens) * Ecost + 
+            Asens * Bsens * (1 - Csens) * (1 - Dsens) * Ecost)
+    return(pred0 , pred1)
+
 def extra_path_3(A, B, C, D, F, G):
     ''' This calculates the sensitivity of a path constructed including path3
 
@@ -197,6 +292,41 @@ def extra_path_3(A, B, C, D, F, G):
     result5 = CAS(A, result4)
 
     return(result5)
+
+def extra_path_3_cost(A, B, C, D, F , G):
+    ''' This calculates the sensitivity of a path constructed including path3
+
+    We have the algorithm:  A and ((B and C) or  D or (F and G))
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Fsens , Fspec  = F[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+    Fcost          = F[2]
+
+    pred0 = ((1 - Aspec) * Bcost +  
+            (1 - Aspec) * (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dcost + 
+            (1 - Aspec) * Bspec * Dspec * Fcost + 
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dspec * Fcost)
+    pred1 = (Asens * Bcost + 
+            Asens * Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost + 
+            Asens * (1 - Bsens) * (1 - Dsens) * Fcost + 
+            Asens * Bsens * (1 - Csens) * (1 - Dsens) * Fcost)
+    return(pred0 , pred1)
 
 def extra_path_2and3(A, B, C, D, E, F, G):
     ''' This calculates the sensitivity of an algorithm including path 2 & 3
@@ -219,7 +349,44 @@ def extra_path_2and3(A, B, C, D, E, F, G):
 
     return(result6)
 
-def extra_path_1and2(A, B, C, D, E, F, G):
+def extra_path_2and3_cost(A, B, C, D, E, F , G):
+    ''' This calculates the sensitivity of a path constructed including path3
+
+    We have the algorithm:  A and ((B and C) or  D or (F and G))
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Esens , Espec  = F[0]
+    Fsens , Fspec  = E[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+    Ecost          = E[2]
+    Fcost          = F[2]
+
+    pred0 = ((1 - Aspec) * Bcost +  
+            (1 - Aspec) * (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dcost + 
+            (1 - Aspec) * Bspec * Dspec * (Fcost + Ecost) + 
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dspec * (Fcost + Ecost))
+    pred1 = (Asens * Bcost + 
+            Asens * Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost + 
+            Asens * (1 - Bsens) * (1 - Dsens) * (Fcost + Ecost) + 
+            Asens * Bsens * (1 - Csens) * (1 - Dsens) * (Fcost + Ecost))
+    return(pred0 , pred1)
+
+def extra_path_1and2(A, B, C, D, E):
     ''' This calculates the sensitivity of an algorithm including path 1 & 2
 
     We have the algorithm:  (B and C) or  (A and (D or E))
@@ -238,7 +405,42 @@ def extra_path_1and2(A, B, C, D, E, F, G):
 
     return(result4)
 
-def extra_path_1and3(A, B, C, D, E, F, G):
+def extra_path_1and2_cost(A, B, C, D, E):
+    ''' This calculates the sensitivity of an algorithm including path 1 & 2
+
+    We have the algorithm:  (B and C) or  (A and (D or E))
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Esens , Espec  = E[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+    Ecost          = E[2]
+
+    pred0 = (Bcost +  
+            (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dcost + 
+            (1 - Aspec) * Bspec * Dspec * Ecost + 
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dspec * Ecost)
+    pred1 = ( Bcost + 
+            Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost + 
+            Asens * (1 - Bsens) * (1 - Dsens) * Ecost + 
+            Asens * Bsens * (1 - Csens) * (1 - Dsens) * Ecost)
+    return(pred0 , pred1)
+
+def extra_path_1and3(A, B, C, D, F, G):
     ''' This calculates the sensitivity of an algorithm including path 1 & 3
 
     We have the algorithm:  (B and C) or  (A and (D or (F and G)))
@@ -258,6 +460,41 @@ def extra_path_1and3(A, B, C, D, E, F, G):
     result5 = COS(result1, result4)
 
     return(result5)
+
+def extra_path_1and3_cost(A, B, C, D, F ,G):
+    ''' This calculates the sensitivity of a path constructed including path3
+
+    We have the algorithm:  A and ((B and C) or  D or (F and G))
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Fsens , Fspec  = F[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+    Fcost          = F[2]
+
+    pred0 = ( Bcost +  
+            (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dcost + 
+            (1 - Aspec) * Bspec * Dspec * Fcost + 
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dspec * Fcost)
+    pred1 = ( Bcost + 
+            Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost + 
+            Asens * (1 - Bsens) * (1 - Dsens) * Fcost + 
+            Asens * Bsens * (1 - Csens) * (1 - Dsens) * Fcost)
+    return(pred0 , pred1)
 
 def all_paths(A, B, C, D, E, F, G):
     ''' This calculates the sensitivity of an algorithm including Paths 1 & 2 & 3
@@ -280,6 +517,43 @@ def all_paths(A, B, C, D, E, F, G):
 
     return(result6)
 
+def all_extra_paths_cost(A, B, C, D, E, F , G):
+    ''' This calculates the sensitivity of a path constructed including path3
+
+    We have the algorithm:  A and ((B and C) or  D or (F and G))
+
+    Inputs:
+    A-D             : List          : [sens, spec]
+
+    Outputs:
+    pred0 , pred1   : Float         : Cost value
+    '''
+    Asens , Aspec  = A 
+    Bsens , Bspec  = B[0]
+    Csens , Cspec  = C[0]
+    Dsens , Dspec  = D[0]
+    Esens , Espec  = F[0]
+    Fsens , Fspec  = E[0]
+    Bcost          = B[2]
+    Ccost          = C[2]
+    Dcost          = D[2]
+    Ecost          = E[2]
+    Fcost          = F[2]
+
+    pred0 = ( Bcost +  
+             (1 - Bspec) * Ccost +
+            (1 - Aspec) * Bspec * Dcost +
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dcost + 
+            (1 - Aspec) * Bspec * Dspec * (Fcost + Ecost) + 
+            (1 - Aspec) * (1 - Bspec) * Cspec * Dspec * (Fcost + Ecost))
+    pred1 = ( Bcost + 
+            Bsens * Ccost + 
+            Asens * (1 - Bsens) * Dcost +
+            Asens * Bsens * (1 - Csens) * Dcost + 
+            Asens * (1 - Bsens) * (1 - Dsens) * (Fcost + Ecost) + 
+            Asens * Bsens * (1 - Csens) * (1 - Dsens) * (Fcost + Ecost))
+    return(pred0 , pred1)
+
 ###############################################################################
 ############## Code Section Three - ToolKit ###################################
 ###############################################################################
@@ -294,7 +568,7 @@ def il(list_):
 
     return(range(len( list_)))
 
-def prep(df, index):
+def prep(df, index, ret_cost = False):
     '''Prep function is neccesary to pluck the items from the Pandas Dataframe
 
     Inputs
@@ -309,6 +583,9 @@ def prep(df, index):
     df          = df.iloc[index]
     values      = [df.iloc[3],df.iloc[6]]
     test_name   = str(df.iloc[0])
+    cost        = df['Cost']
+    if ret_cost:
+        return(values, test_name, cost)
     return(values, test_name)
 
 def rdtcattconflict(i):
@@ -325,7 +602,7 @@ def run_no_extra_paths(A, B, C, D):
     of tests
     '''
 
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D)))
@@ -334,13 +611,15 @@ def run_no_extra_paths(A, B, C, D):
         Bi,Bstr = prep(B, i[1])
         Ci,Cstr = prep(C, i[2])
         Di,Dstr = prep(D, i[3])
-        values  = no_extra_paths(A[i[0]], Bi, Ci, Di)
+        values  = list(no_extra_paths(A[i[0]], Bi, Ci, Di))
+        cost = list(no_extra_paths_cost(A[i[0]], prep(B, i[1], True), prep(C, i[2], True), prep(D, i[3],True)))
         name    = Bstr +' '+ Cstr + ' ' + Dstr+' NOXP'
-
+        values += cost
+        values.append(name)
         temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
-        output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
+        temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
+        #temp.loc[0,'Algorithm'] = name
+        output.loc[len(output)] = values
     return(output)
 
 def run_extra_path_1(A, B, C, D):
@@ -348,7 +627,7 @@ def run_extra_path_1(A, B, C, D):
     of tests
     '''
 
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D)))
@@ -358,13 +637,14 @@ def run_extra_path_1(A, B, C, D):
         Ci,Cstr = prep(C, i[2])
         Di,Dstr = prep(D, i[3])
 
-        values  = extra_path_1(A[i[0]], Bi, Ci, Di)
+        values  = list(extra_path_1(A[i[0]], Bi, Ci, Di))
+        cost = list(extra_path_1_cost(A[i[0]], prep(B, i[1], True), prep(C, i[2], True), prep(D, i[3],True)))
         name    = Bstr +' '+ Cstr + ' ' + Dstr+' XP1'
-
+        values += cost
+        values.append(name)
         temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
+        temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
         output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
 
     return(output)
 
@@ -373,7 +653,7 @@ def run_extra_path_2(A, B, C, D, E):
     of tests
     '''
 
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E)))
@@ -385,13 +665,17 @@ def run_extra_path_2(A, B, C, D, E):
             Di,Dstr = prep(D, i[3])
             Ei,Estr = prep(E, i[4])
 
-            values  = extra_path_2(A[i[0]], Bi, Ci, Di, Ei)
+            values  = list(extra_path_2(A[i[0]], Bi, Ci, Di, Ei))
+            cost = list(extra_path_2_cost(A[i[0]], prep(B, i[1], True), prep(C, i[2], True), prep(D, i[3],True),prep(E,i[4],True)))
+
             name    = Bstr +' '+ Cstr + ' ' + Dstr + ' ' + Estr +' XP2'
 
+            values += cost
+            values.append(name)
             temp    = pd.DataFrame([values])
-            temp.loc[0,'Algorithm'] = name
+            temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
             output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
+
     output.drop_duplicates()
 
     return(output)
@@ -400,7 +684,7 @@ def run_extra_path_3(A, B, C, D, F, G):
     ''' This runs the extra_path_3 algorithm for all possibile combinations
     of tests
     '''
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(F), il(G)))
@@ -411,13 +695,15 @@ def run_extra_path_3(A, B, C, D, F, G):
         Di,Dstr = prep(D, i[3])
         Fi,Fstr = prep(F, i[4])
         Gi      = [G[i[5]],1-G[i[5]]]
-        values  = extra_path_3(A[i[0]], Bi, Ci, Di, Fi, Gi)
+        values  = list(extra_path_3(A[i[0]], Bi, Ci, Di, Fi, Gi))
         name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+Fstr+' ' +str(G[i[5]])+' XP3'
+        cost = list(extra_path_3_cost(A[i[0]], prep(B, i[1], True), prep(C, i[2], True), prep(D, i[3],True),prep(F,i[4],True),Gi))
 
+        values += cost
+        values.append(name)
         temp    = pd.DataFrame([values])
-        temp.loc[0,'Algorithm'] = name
+        temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
         output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
@@ -427,7 +713,7 @@ def run_extra_path_2and3(A, B, C, D, E, F, G):
     of tests
     '''
 
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
@@ -440,23 +726,30 @@ def run_extra_path_2and3(A, B, C, D, E, F, G):
             Ei,Estr = prep(E, i[4])
             Fi,Fstr = prep(F, i[5])
             Gi      = [G[i[6]],1-G[i[6]]]
-            values  = extra_path_2and3(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
+            values  = list(extra_path_2and3(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi))
             name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP23'
-
+            cost = list(extra_path_2and3_cost(A[i[0]], 
+                            prep(B, i[1], True), 
+                            prep(C, i[2], True), 
+                            prep(D, i[3],True),
+                            prep(E, i[4],True),
+                            prep(F, i[5],True),
+                            Gi))
+            values += cost
+            values.append(name)
             temp    = pd.DataFrame([values])
-            temp.loc[0,'Algorithm'] = name
+            temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
             output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
 
-def run_extra_path_1and2(A, B, C, D, E, F, G):
+def run_extra_path_1and2(A, B, C, D, E):
     ''' This runs the extra_path_1and2 algorithm for all possibile combinations
     of tests
     '''
 
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
@@ -467,44 +760,49 @@ def run_extra_path_1and2(A, B, C, D, E, F, G):
             Ci,Cstr = prep(C, i[2])
             Di,Dstr = prep(D, i[3])
             Ei,Estr = prep(E, i[4])
-            Fi,Fstr = prep(F, i[5])
-            Gi      = [G[i[6]],1-G[i[6]]]
-            values  = extra_path_1and2(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
-            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP12'
+            values  = list(extra_path_1and2(A[i[0]], Bi, Ci, Di, Ei))
+            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr+' XP12'
+            cost = list(extra_path_1and2_cost(A[i[0]], 
+                        prep(B, i[1], True), 
+                        prep(C, i[2], True), 
+                        prep(D, i[3],True),
+                        prep(E, i[4],True)))
 
+            values += cost
+            values.append(name)
             temp    = pd.DataFrame([values])
-            temp.loc[0,'Algorithm'] = name
+            temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
             output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
 
-def run_extra_path_1and3(A, B, C, D, E, F, G):
+def run_extra_path_1and3(A, B, C, D, F, G):
     ''' This runs the extra_path_1and3 algorithm for all possibile combinations
     of tests
     '''
 
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
-    combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
+    combinations = list(it.product(il(A), il(B), il(C), il(D), il(F), il(G)))
 
     for i in combinations:
         if not rdtcattconflict(i):
             Bi,Bstr = prep(B, i[1])
             Ci,Cstr = prep(C, i[2])
             Di,Dstr = prep(D, i[3])
-            Ei,Estr = prep(E, i[4])
-            Fi,Fstr = prep(F, i[5])
-            Gi      = [G[i[6]],1-G[i[6]]]
-            values  = extra_path_1and3(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
-            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP13'
+            Fi,Fstr = prep(F, i[4])
+            Gi      = [G[i[5]],1-G[i[5]]]
+            values  = list(extra_path_1and3(A[i[0]], Bi, Ci, Di, Fi, Gi))
+            name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+Fstr+' ' +str(G[i[5]])+' XP13'
+            cost = list(extra_path_1and3_cost(A[i[0]], prep(B, i[1], True), prep(C, i[2], True), prep(D, i[3],True),prep(F,i[5],True),Gi))
 
+            values += cost
+            values.append(name)
             temp    = pd.DataFrame([values])
-            temp.loc[0,'Algorithm'] = name
+            temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
             output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
@@ -514,7 +812,7 @@ def run_allpaths(A, B, C, D, E, F, G):
     of tests
     '''
 
-    output = pd.DataFrame()  ## An empty placeholder
+    output = pd.DataFrame(columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm'])  ## An empty placeholder
 
     ## Combinations holds all iterations of viable combinations (algorithms)
     combinations = list(it.product(il(A), il(B), il(C), il(D), il(E), il(F), il(G)))
@@ -527,13 +825,21 @@ def run_allpaths(A, B, C, D, E, F, G):
             Ei,Estr = prep(E, i[4])
             Fi,Fstr = prep(F, i[5])
             Gi      = [G[i[6]],1-G[i[6]]]
-            values  = all_paths(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi)
+            values  = list(all_paths(A[i[0]], Bi, Ci, Di, Ei, Fi, Gi))
             name    = Bstr +' '+ Cstr + ' ' + Dstr + ' '+ Estr + ' '+Fstr+' ' +str(G[i[6]])+' XP123'
+            cost = list(all_extra_paths_cost(A[i[0]], 
+                            prep(B, i[1], True), 
+                            prep(C, i[2], True), 
+                            prep(D, i[3],True),
+                            prep(E,i[4],True),
+                            prep(F,i[5],True),
+                            Gi))
 
+            values += cost
+            values.append(name)
             temp    = pd.DataFrame([values])
-            temp.loc[0,'Algorithm'] = name
+            temp.columns  = ['sens', 'spec', 'cost-0','cost-1', 'Algorithm']
             output  = output.append(temp)
-    output.columns  = ['sens', 'spec', 'Algorithm']
     output.drop_duplicates()
 
     return(output)
@@ -574,6 +880,6 @@ if __name__ == '__main__':
     run_extra_path_2(A,B,C,D,E)
     run_extra_path_3(A,B,C,D,F,G)
     run_extra_path_2and3(A,B,C,D,E,F,G)
-    run_extra_path_1and2(A,B,C,D,E,F,G)
-    run_extra_path_1and3(A,B,C,D,E,F,G)
+    run_extra_path_1and2(A,B,C,D,E)
+    run_extra_path_1and3(A,B,C,D,F,G)
     run_allpaths(A,B,C,D,E,F,G)
