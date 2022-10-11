@@ -865,7 +865,7 @@ if __name__ == '__main__':
     OCNGNH  = 0.1
     ## Create a subset of the data for membership in phases.
     ## Phasem1 is Phase -1 in the literature
-    A   = [[OCNGH,OCNGNH]]
+    A   = [[OCNGH,1-OCNGNH]]
     B   = data.loc[data['type'] == 1]
     C   = data.loc[data['type'] == 0]
     D   = data.loc[data['type'] == 2]
